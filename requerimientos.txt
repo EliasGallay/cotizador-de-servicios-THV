@@ -1,0 +1,31 @@
+Servicios:
+    Piping
+        Potencia instalada
+            0 - 10000 kw
+        Longitud de Canierias
+        Horas de cadista
+
+    Relevamiento de Maquinarias
+        Potencia instalada
+            0 - 10000 kw
+        Cantidad de tomas de fuerza (cantidad de ejes que tiene la maquina)
+            (unidad)
+    Instalaciones Electricas
+        Potencia instalada
+            0 - 10000 kw
+
+    Digitalizacion de Planos
+        Horas de cadista
+
+    Ingenieria Basica de Proyecto
+        Potencia instalada
+            0 - 10000 kw
+        Horas de cadista
+        Monto de Obras civiles
+            Pesos
+
+
+
+
+
+
