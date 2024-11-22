@@ -2,7 +2,8 @@ const montoDeObraHM =[36, 54, 182, 638, 910];
 const honorarioMinimoHM =[2.52, 3.51, 10.92, 35.09, 52.04];
 const valorHM = (350000);
 const valorKW = parseFloat(valorHM*0.967);
-
+let presupuestoCadista = 0;
+let presupuestoFinalInstalacionesElectricas = 0;
 
 function principal(){
 
@@ -21,21 +22,34 @@ do {
   opcion = Number(opcion);
   switch (opcion) {
     case 1:
-        calculoPiping();
+        alert("para calcular el presupuesto de piping primero debemos calcular obra electrica y horas cadista ")
+        presupuestoFinalInstalacionesElectricas=(calculoPresupuestoInstalacionElectrica(valorHM, valorKW));
+        alert(presupuestoFinalInstalacionesElectricas)
+        presupuestoCadista = calculoDigitalizacionDePlanos();
+        alert(presupuestoCadista[1])
+        let presupuestoFinalPiping = calculoPiping(presupuestoCadista[1], presupuestoFinalInstalacionesElectricas);
+        alert(presupuestoFinalPiping)
         break;
     case 2:
         calculoRelevamientoDeMaquinarias();
         break;
     case 3:
-        alert(calculoPresupuestoInstalacionElectrica(valorHM, valorKW));
+        presupuestoFinalInstalacionesElectricas=(calculoPresupuestoInstalacionElectrica(valorHM, valorKW)); // listo
+        alert(presupuestoFinalInstalacionesElectricas)
         break;
     case 4:
-        let presupuestoCadista = calculoDigitalizacionDePlanos();
+        presupuestoCadista = calculoDigitalizacionDePlanos(); //listo
         alert(`$${presupuestoCadista[0]} este es el precio en pesos`);
         alert(`${presupuestoCadista[1]} este es el precio en float`);
         break;
     case 5:
-        calculoIngenieriaBasicaDeProyecto();
+        alert("para calcular ingenieria basica de proyecto primero debemos calcular obra electrica y horas cadista")
+        presupuestoFinalInstalacionesElectricas=(calculoPresupuestoInstalacionElectrica(valorHM, valorKW));
+        alert(presupuestoFinalInstalacionesElectricas)
+        presupuestoCadista = calculoDigitalizacionDePlanos();
+        alert(presupuestoCadista[1])
+        let presupuestoFinalIngenieriaBasica = calculoIngenieriaBasicaDeProyecto(presupuestoCadista[1], presupuestoFinalInstalacionesElectricas );
+        alert(presupuestoFinalIngenieriaBasica)
         break;
     case 6:
         alert("salir");
@@ -44,14 +58,29 @@ do {
       alert("Opción no válida, intenta de nuevo.");
   }
 } while (opcion !== 6);
-
-//potencia instalada por valor de kw
-
 }
 
-function calculoPiping(){
-    let valorMetroPiping = (valorHM *0.15);
-    alert("se esta realizando calculo de piping")
+function calculoPiping(obraElectrica, HoraCad) {
+    let valorMetroPiping = valorHM * 0.15;
+
+    alert("Se está realizando el cálculo de Piping. \nIngrese los metros lineales de Piping.");
+
+    let metrosLinealesPiping = parseFloat(prompt("Ingrese los metros lineales de Piping:"));
+
+    if (isNaN(metrosLinealesPiping) || metrosLinealesPiping <= 0) {
+        alert("Por favor, ingrese un valor válido para los metros lineales de Piping.");
+        return;
+    }
+
+
+    if (isNaN(obraElectrica) || obraElectrica <= 0 || isNaN(HoraCad) || HoraCad <= 0) {
+        alert("Por favor, ingrese valores válidos para la obra eléctrica y horas de CAD.");
+        return;
+    }
+
+    let presupuestoPiping = (obraElectrica + HoraCad) + (metrosLinealesPiping * valorMetroPiping);
+
+    return parseFloat(presupuestoPiping);
 }
 
 function calculoRelevamientoDeMaquinarias(){
@@ -100,15 +129,33 @@ function calculoDigitalizacionDePlanos(){
         minimumFractionDigits: 2,
         maximumFractionDigits: 2
     }).format(presupuestoFinalCadista);
-    return [presupuestoFormateado, presupuestoFinalCadista.toFixed(2)]
+    return [presupuestoFormateado, presupuestoFinalCadista.toFixed(2)];
     // return parseFloat(presupuestoFinalCadista.toFixed(2));
-};
+}
 
-function calculoIngenieriaBasicaDeProyecto(){
-    alert("se esta realizando calculo de ingenieria basica de proyecto ")
-};
+function calculoIngenieriaBasicaDeProyecto(presuCad, presuObraElectrica) {
+    presuCad = parseFloat(presuCad);
+    presuObraElectrica = parseFloat(presuObraElectrica);
 
+    if (isNaN(presuCad) || isNaN(presuObraElectrica)) {
+        alert("Los valores de presupuesto CAD o eléctrico no son válidos. Verifique los datos.");
+        return;
+    }
+
+    let montoDeObraCivil = parseFloat(prompt("Ingrese monto de obra civil en pesos:"));
+    if (isNaN(montoDeObraCivil) || montoDeObraCivil <= 0) {
+        alert('Por favor, ingrese un valor numérico válido.');
+        return;
+    }
+
+    let calculoObraCivil = montoDeObraCivil * 0.01;
+    alert(`El cálculo de obra civil es: $${calculoObraCivil.toFixed(2)}`);
+
+    let presuIngenieriaBasica = presuCad + presuObraElectrica + calculoObraCivil;
+    return presuIngenieriaBasica;
+}
 
 
 principal();
 
+//toDo: revisar error en calculo de Piping, desarrollar relevamiento de maquinarias
