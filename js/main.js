@@ -26,31 +26,27 @@ function principal() {
                 presupuestoFinalInstalacionesElectricas = (calculoPresupuestoInstalacionElectrica(valorHM, valorKW));
                 alert(presupuestoFinalInstalacionesElectricas)
                 presupuestoCadista = calculoDigitalizacionDePlanos();
-                alert(presupuestoCadista[1])
                 alert(presupuestoCadista[1] + ", " + presupuestoFinalInstalacionesElectricas + " ESTOS SON LOS VALORES ANTES DE ENTRAR A LA FUNCION DE PIPING");
                 let presupuestoFinalPiping = calculoPiping(presupuestoCadista[1], presupuestoFinalInstalacionesElectricas);
-                alert(presupuestoFinalPiping)
+                alert(`El cálculo de piping es: ${ conversorNumeroPesos( presupuestoFinalPiping)}`);
                 break;
             case 2:
                 calculoRelevamientoDeMaquinarias();
                 break;
             case 3:
                 presupuestoFinalInstalacionesElectricas = (calculoPresupuestoInstalacionElectrica(valorHM, valorKW)); // listo
-                alert(presupuestoFinalInstalacionesElectricas)
+                alert(`El cálculo de instalaciones electricas es: ${ conversorNumeroPesos( presupuestoFinalInstalacionesElectricas)}`);
                 break;
             case 4:
                 presupuestoCadista = calculoDigitalizacionDePlanos(); //listo
-                alert(`$${presupuestoCadista[0]} este es el precio en pesos`);
-                alert(`${presupuestoCadista[1]} este es el precio en float`);
+                alert(`El cálculo de cadista es: ${ conversorNumeroPesos( presupuestoCadista[1])}`);
                 break;
             case 5:
                 alert("para calcular ingenieria basica de proyecto primero debemos calcular obra electrica y horas cadista")
                 presupuestoFinalInstalacionesElectricas = (calculoPresupuestoInstalacionElectrica(valorHM, valorKW));
-                alert(presupuestoFinalInstalacionesElectricas);
                 presupuestoCadista = calculoDigitalizacionDePlanos();
-                alert(presupuestoCadista[1]);
                 let presupuestoFinalIngenieriaBasica = calculoIngenieriaBasicaDeProyecto(presupuestoCadista[1], presupuestoFinalInstalacionesElectricas);
-                alert(presupuestoFinalIngenieriaBasica);
+                alert(`El cálculo de ingenieria basica de proyecto es: ${ conversorNumeroPesos( presupuestoFinalIngenieriaBasica)}`);
                 break;
             case 6:
                 alert("salir");
@@ -66,7 +62,7 @@ function calculoPiping(horaCad, obraElectrica) {
     let ObraElectrica = parseFloat(obraElectrica);
     let valorMetroPiping = valorHM * 0.15;
 
-    alert("Se está realizando el cálculo de Piping. \nIngrese los metros lineales de Piping.");
+    alert("Se está realizando el cálculo de Piping.");
 
     let metrosLinealesPiping = parseFloat(prompt("Ingrese los metros lineales de Piping:"));
 
@@ -128,16 +124,12 @@ function calculoDigitalizacionDePlanos() {
     }).format(presupuestoFinalCadista);
     return [presupuestoFormateado, presupuestoFinalCadista.toFixed(2)];
     // return parseFloat(presupuestoFinalCadista.toFixed(2));
+    // desde la linea 121 hasta la linea 125 fue reemplazado por una funcion, se puede eliminar del codigo
 }
 
 function calculoIngenieriaBasicaDeProyecto(presuCad, presuObraElectrica) {
     presuCad = parseFloat(presuCad);
     presuObraElectrica = parseFloat(presuObraElectrica);
-
-    if (isNaN(presuCad) || isNaN(presuObraElectrica)) {
-        alert("Los valores de presupuesto CAD o eléctrico no son válidos. Verifique los datos.");
-        return;
-    }
 
     let montoDeObraCivil = parseFloat(prompt("Ingrese monto de obra civil en pesos:"));
     if (isNaN(montoDeObraCivil) || montoDeObraCivil <= 0) {
@@ -150,6 +142,17 @@ function calculoIngenieriaBasicaDeProyecto(presuCad, presuObraElectrica) {
 
     let presuIngenieriaBasica = presuCad + presuObraElectrica + calculoObraCivil;
     return presuIngenieriaBasica;
+}
+
+
+function conversorNumeroPesos(numero) {
+    let conversion = new Intl.NumberFormat('es-AR', {
+        style: 'currency',
+        currency: 'ARS',
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2
+    }).format(numero);
+    return conversion;
 }
 
 
