@@ -155,4 +155,4 @@ function calculoIngenieriaBasicaDeProyecto(presuCad, presuObraElectrica) {
 
 principal();
 
-//toDo: revisar error en calculo de Piping, desarrollar relevamiento de maquinarias
+//toDo: , desarrollar relevamiento de maquinarias
